@@ -4,30 +4,39 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Allows manual runs
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository code
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
+      # Step 3: Install dependencies using npm
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
 
+      # Step 4: Build the project (optional, remove if not needed)
       - name: Build project
-        run: npm run build
+        run: |
+          npm run build
 
+      # Step 5: Deploy to Azure Web App
       - name: Deploy to Azure
-        uses: Azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v2
         with:
-          app-name: 'NairouteWeb'
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          app-name: 'NairouteWeb'  # Replace with your Azure App Service name
+          slot-name: 'production'  # Replace with your desired deployment slot (optional)
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}  # GitHub secret with Azure publish profile
+          # Optional: If you want to deploy to a specific folder, uncomment and configure below
+          # package: './dist'  # Path to your build output folder (e.g., dist/ or build/)
