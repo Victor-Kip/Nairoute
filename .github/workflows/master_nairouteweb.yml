@@ -1,4 +1,4 @@
-name: Node.js Deploy to Azure
+name: Node.js Deploy to Azure Web
 
 on:
   push:
